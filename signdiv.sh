@@ -17,3 +17,4 @@ do
                 signatures/"${SIGNATURES_BN}_${start_x}x${start_y}".png
     done
 done
+rm -rf ${TMPDIR}
