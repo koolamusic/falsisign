@@ -1,12 +1,11 @@
 #!/bin/bash
 set -Eeuxo pipefail
 
-DOCUMENT=$1
+DOCUMENT="$1"
 X=$3
 Y=$4
 DOCUMENT_BN=$(basename "${DOCUMENT}" .pdf)
-TMPDIR=/tmp/falsisign-${RANDOM}
-mkdir ${TMPDIR}
+TMPDIR=$(mktemp --directory --tmpdir falsisign-XXXXXXXXXX)
 
 # Extract each page of the PDF
 convert +profile '*' "${DOCUMENT}" "${TMPDIR}/${DOCUMENT_BN}.pdf"  # Some PDF trigger errors with their shitty profiles
@@ -24,3 +23,4 @@ do
 done
 convert "${TMPDIR}/${DOCUMENT_BN}"-*-scanned.pdf -density 150 -colorspace RGB "${TMPDIR}/${DOCUMENT_BN}"_large.pdf
 convert "${TMPDIR}/${DOCUMENT_BN}"_large.pdf -compress Zip "$5"
+rm -rf ${TMPDIR}

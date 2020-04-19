@@ -2,8 +2,7 @@
 set -Eeuxo pipefail
 
 SIGNATURES=$1
-TMPDIR=/tmp/falsisign-${RANDOM}
-mkdir ${TMPDIR}
+TMPDIR=$(mktemp --directory --tmpdir falsisign-XXXXXXXXXX)
 SIGNATURES_BN=$(basename "${SIGNATURES}" .pdf)
 
 convert -density 576 -resize 3560x4752 -transparent white "${SIGNATURES}" "${TMPDIR}/${SIGNATURES_BN}.png"
@@ -18,3 +17,4 @@ do
                 signatures/"${SIGNATURES_BN}_${start_x}x${start_y}".png
     done
 done
+rm -rf ${TMPDIR}
